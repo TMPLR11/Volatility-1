@@ -316,8 +316,36 @@ class malsysproc(common.AbstractWindowsCommand):
 		if sysproc:
 		    info = self.build_obj(process, name, parent, ctime, counter, namelist[name], pathlist[name], prioritylist[name], cmdlinelist[name])
 		    yield info
-
-
+			
+			
+    def unified_output(self, data):
+        return TreeGrid ([
+            ("ProcessName", str),
+            ("PId", int),
+            ("NameList", str),
+            ("Path", str),
+            ("PPId", str),
+            ("Time", str),
+            ("Priority", str),
+            ("CmdLine", str),
+            ("Count", str)],
+            self.generator(data))
+            
+        
+    def generator(self, data):
+        for info in data:
+            yield (0,[
+                str(info['processname']),
+                int(info['pid']),
+                str(info['name']),
+                str(info['path']),
+                str(info['ppid']),
+                str(info['time']),
+                str(info['priority']),
+                str(info['cmdline']),
+                str(info['count'])
+                ])
+			
 
     def render_text(self, outfd, data):
 	print
